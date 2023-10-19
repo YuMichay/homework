@@ -12,16 +12,19 @@ const myIterable = {
     [Symbol.iterator]() {
         if (typeof this.from !== "number" || typeof this.to !== "number" || this.to < this.from) throw new Error("Incorrect values");
     
-        this.current = this.from;
-        return this;
+        return {
+            current: this.from,
+            last: this.to,
+
+            next() {
+                if (this.current <= this.last) {
+                    return { done: false, value: this.current++ };
+                } else {
+                    return { done: true };
+                }
+            }
+        };
     },
-    next() {
-        if (this.current <= this.to) {
-        return { done: false, value: this.current++ };
-        } else {
-        return { done: true };
-        }
-    }
 }
   
 for (let item of myIterable) {
@@ -34,15 +37,18 @@ const myIterable2 = {
     [Symbol.iterator]() {
         if (typeof this.from !== "number" || typeof this.to !== "number" || this.to < this.from) throw new Error("Incorrect values");
     
-        this.current = this.from;
-        return this;
-    },
-    next() {
-        if (this.current <= this.to) {
-        return { done: false, value: this.current++ };
-        } else {
-        return { done: true };
-        }
+        return {
+            current: this.from,
+            last: this.to,
+
+            next() {
+                if (this.current <= this.last) {
+                    return { done: false, value: this.current++ };
+                } else {
+                    return { done: true };
+                }
+            }
+        };
     }
 }
   

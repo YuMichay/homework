@@ -75,7 +75,7 @@ const countTime = (btnType) => {
 // stop the timer and clean displaying time
 const stopTimer = (btn) => {
     if (btn === stopTimerBtn) {
-        stopwatchPart.style.opacity = 1;
+        stopwatchPart.style.display = "block";
         showTime(0, timeFieldTimer);
         window.clearInterval(timer);
         stopTimerBtn.setAttribute("disabled", "true");
@@ -105,7 +105,6 @@ const showEmptyInput = () => {
 
 // start the timer and check if the timer should continue or start again
 const startTimer = () => {
-    stopwatchPart.style.opacity = 0;
     const isInputFull = [...inputs].filter((input) => +input.value > 0).length > 0
     && (hoursInput.value > 0 || minutesInput.value > 0 || secondsInput.value > 0);
     if (!isInputFull) {
@@ -115,6 +114,7 @@ const startTimer = () => {
         isTimerPaused = false;
     } else {
         countTime("start");
+        stopwatchPart.style.display = "none";
     }
     startTimerBtn.classList.add("hidden");
     pauseTimerBtn.classList.remove("hidden");
@@ -151,17 +151,18 @@ const switchStopwatch = (type) => {
         pauseStopwatchBtn.removeAttribute("disabled");
         resetStopwatchBtn.removeAttribute("disabled");
         startStopwatchBtn.setAttribute("disabled", "true");
-        timerPart.style.opacity = 0;
-    } else if (type === pauseStopwatchBtn || type === resetStopwatchBtn) {
+        timerPart.style.display = "none";
+    } else if (type === pauseStopwatchBtn) {
+        window.clearInterval(timer);
+        pauseStopwatchBtn.setAttribute("disabled", "true");
+        startStopwatchBtn.removeAttribute("disabled");
+    } else if (type === resetStopwatchBtn) {
         window.clearInterval(timer);
         pauseStopwatchBtn.setAttribute("disabled", "true");
         resetStopwatchBtn.setAttribute("disabled", "true");
         startStopwatchBtn.removeAttribute("disabled");
-    }
-    
-    if (type === resetStopwatchBtn) {
         time = 0;
-        timerPart.style.opacity = 1;
+        timerPart.style.display = "block";
         showTime(time, timeFieldStopwatch);
     }
 }

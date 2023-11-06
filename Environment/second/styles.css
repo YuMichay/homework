@@ -21,7 +21,6 @@ body {
 
 .stopwatch, .timer {
     width: 49%;
-    transition: opacity 0.3s ease;
 }
 
 .timer {
